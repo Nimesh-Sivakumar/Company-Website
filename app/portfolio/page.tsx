@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
+import { asset } from "@/lib/asset";
 import { Wrap } from "@/components/Section";
 import { projects } from "@/lib/content";
 
@@ -47,7 +48,7 @@ export default function PortfolioPage() {
                 </div>
                 <div className="relative aspect-4/3">
                   <Image
-                    src={project.image}
+                    src={asset(project.image)}
                     alt={project.alt}
                     fill
                     sizes="(min-width: 1024px) 55vw, 100vw"

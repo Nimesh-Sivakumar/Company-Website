@@ -19,7 +19,7 @@ export default function HomePage() {
       {/* HERO */}
       <section className="relative isolate flex min-h-screen items-center overflow-hidden">
         <Image
-          src="/assets/kitchen-01.jpg"
+          src={asset("/assets/kitchen-01.jpg")}
           alt="Custom wet and dry kitchen with island by Cabinet Creation Co."
           fill
           priority
@@ -62,7 +62,7 @@ export default function HomePage() {
         <Wrap className="grid items-center gap-14 lg:grid-cols-2">
           <Reveal>
             <Image
-              src="/assets/kitchen-02.jpg"
+              src={asset("/assets/kitchen-02.jpg")}
               alt="Light timber kitchen with dining island"
               width={900}
               height={1100}
@@ -174,7 +174,7 @@ export default function HomePage() {
                 <Link href="/portfolio" className="group block">
                   <div className="relative aspect-4/3 overflow-hidden">
                     <Image
-                      src={project.image}
+                      src={asset(project.image)}
                       alt={project.alt}
                       fill
                       sizes="(min-width: 640px) 50vw, 100vw"

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
+import { asset } from "@/lib/asset";
 import { SectionHead, Wrap } from "@/components/Section";
 import { process, services } from "@/lib/content";
 
@@ -34,7 +35,7 @@ export default function ServicesPage() {
               >
                 <div className="relative aspect-4/3">
                   <Image
-                    src={service.image}
+                    src={asset(service.image)}
                     alt={service.alt}
                     fill
                     sizes="(min-width: 1024px) 50vw, 100vw"
