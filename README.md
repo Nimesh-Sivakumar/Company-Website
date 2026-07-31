@@ -25,10 +25,3 @@ This project serves as the digital storefront for the business, highlighting cus
 *   **JavaScript (ES6):** Used sparingly for the hero scroll-interaction, sticky navigation, and mobile menu toggling.
 *   **Fonts:** [Fraunces](https://fonts.google.com/specimen/Fraunces), [Inter](https://fonts.google.com/specimen/Inter), and [Space Mono](https://fonts.google.com/specimen/Space+Mono) via Google Fonts.
 
-## 🚀 Local Development
-
-To run this project locally, simply clone the repository and open the main HTML file in your browser.
-
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/Nimesh-Sivakumar/company-web.git](https://github.com/Nimesh-Sivakumar/company-web.git)
