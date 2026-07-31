@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buttonClass } from "@/components/Button";
+import FaqList from "@/components/FaqList";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
+import StatsBand from "@/components/StatsBand";
 import { Eyebrow, SectionHead, Wrap } from "@/components/Section";
-import { company, differentiators, faqs, stats } from "@/lib/content";
+import { company, differentiators } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "About",
@@ -51,18 +54,7 @@ export default function AboutPage() {
         </Wrap>
       </section>
 
-      <section className="bg-coffee py-16 text-cream">
-        <Wrap>
-          <Reveal className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <b className="font-display text-4xl font-medium">{stat.value}</b>
-                <span className="mt-2 block text-sm text-cream/70">{stat.label}</span>
-              </div>
-            ))}
-          </Reveal>
-        </Wrap>
-      </section>
+      <StatsBand />
 
       <section className="py-24 lg:py-32">
         <Wrap>
@@ -85,24 +77,8 @@ export default function AboutPage() {
 
       <section className="bg-coffee-soft py-24 lg:py-32">
         <Wrap>
-          <SectionHead eyebrow="FAQ" title="Good to know before you book a visit" />
-          <div className="max-w-3xl divide-y divide-ink/10 border-y border-ink/10">
-            {faqs.map((faq) => (
-              <details key={faq.q} className="group py-5">
-                <summary className="flex cursor-pointer items-center justify-between gap-6 font-display text-lg">
-                  {faq.q}
-                  <span className="text-tan-deep transition-transform group-open:rotate-45">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-3 max-w-[60ch] text-sm text-ink-dim">{faq.a}</p>
-              </details>
-            ))}
-          </div>
-          <Link
-            href="/contact"
-            className="mt-12 inline-flex bg-tan-deep px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.06em] text-cream transition-colors hover:bg-coffee"
-          >
+          <FaqList />
+          <Link href="/contact" className={`mt-12 inline-flex ${buttonClass()}`}>
             Get a Quote
           </Link>
         </Wrap>

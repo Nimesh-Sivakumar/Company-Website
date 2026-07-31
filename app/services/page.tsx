@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import { buttonClass } from "@/components/Button";
+import CoverImage from "@/components/CoverImage";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
-import { SectionHead, Wrap } from "@/components/Section";
+import { Num, SectionHead, Wrap } from "@/components/Section";
 import { process, services } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -33,18 +34,14 @@ export default function ServicesPage() {
                 }`}
               >
                 <div className="relative aspect-4/3">
-                  <Image
+                  <CoverImage
                     src={service.image}
                     alt={service.alt}
-                    fill
                     sizes="(min-width: 1024px) 50vw, 100vw"
-                    className="object-cover"
                   />
                 </div>
                 <div>
-                  <span className="font-mono text-xs text-tan-deep">
-                    {service.num}
-                  </span>
+                  <Num>{service.num}</Num>
                   <h2 className="mt-3 text-3xl sm:text-4xl">{service.title}</h2>
                   <p className="mt-5 text-ink-dim">{service.summary}</p>
                   <ul className="mt-7 space-y-3 text-sm">
@@ -57,7 +54,7 @@ export default function ServicesPage() {
                   </ul>
                   <Link
                     href="/contact"
-                    className="mt-8 inline-flex bg-tan-deep px-6 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-cream transition-colors hover:bg-coffee"
+                    className={`mt-8 inline-flex ${buttonClass("solid", "sm")}`}
                   >
                     Enquire about this
                   </Link>
@@ -79,7 +76,7 @@ export default function ServicesPage() {
             {process.map((step, i) => (
               <Reveal key={step.num} delay={i * 60}>
                 <div className="h-full bg-white-warm p-8">
-                  <span className="font-mono text-xs text-tan-deep">{step.num}</span>
+                  <Num>{step.num}</Num>
                   <h3 className="mt-4 text-xl">{step.title}</h3>
                   <p className="mt-2 text-sm text-ink-dim">{step.body}</p>
                 </div>

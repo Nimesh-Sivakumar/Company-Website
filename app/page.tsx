@@ -1,15 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import { buttonClass } from "@/components/Button";
+import CoverImage from "@/components/CoverImage";
+import FaqList from "@/components/FaqList";
 import Reveal from "@/components/Reveal";
+import StatsBand from "@/components/StatsBand";
 import { asset } from "@/lib/asset";
-import { Eyebrow, SectionHead, Wrap } from "@/components/Section";
+import { Eyebrow, Num, SectionHead, Wrap } from "@/components/Section";
 import {
   differentiators,
-  faqs,
   process,
   projects,
   services,
-  stats,
   testimonials,
 } from "@/lib/content";
 
@@ -18,13 +20,12 @@ export default function HomePage() {
     <>
       {/* HERO */}
       <section className="relative isolate flex min-h-screen items-center overflow-hidden">
-        <Image
+        <CoverImage
           src="/assets/kitchen-01.jpg"
           alt="Custom wet and dry kitchen with island by Cabinet Creation Co."
-          fill
           priority
           sizes="100vw"
-          className="-z-10 scale-105 object-cover"
+          className="-z-10 scale-105"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-coffee/90 via-coffee/65 to-coffee/25" />
         <Wrap>
@@ -43,13 +44,13 @@ export default function HomePage() {
           <div className="mt-9 flex flex-wrap gap-4">
             <Link
               href="/contact"
-              className="inline-flex bg-tan-deep px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.06em] text-cream transition-colors hover:bg-coffee"
+              className={`inline-flex ${buttonClass()}`}
             >
               Get a Quote
             </Link>
             <Link
               href="/portfolio"
-              className="inline-flex border border-cream/50 px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.06em] text-cream transition-colors hover:bg-cream/10"
+              className={`inline-flex ${buttonClass("outlineCream")}`}
             >
               View Portfolio
             </Link>
@@ -87,7 +88,7 @@ export default function HomePage() {
             </p>
             <Link
               href="/about"
-              className="mt-8 inline-flex border border-ink/15 px-6 py-3 text-xs font-semibold uppercase tracking-[0.06em] transition-colors hover:border-tan-deep hover:bg-cream-soft"
+              className={`mt-8 inline-flex ${buttonClass("outline", "sm")}`}
             >
               More about us
             </Link>
@@ -96,18 +97,7 @@ export default function HomePage() {
       </section>
 
       {/* STATS */}
-      <section className="bg-coffee py-16 text-cream">
-        <Wrap>
-          <Reveal className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <b className="font-display text-4xl font-medium">{stat.value}</b>
-                <span className="mt-2 block text-sm text-cream/70">{stat.label}</span>
-              </div>
-            ))}
-          </Reveal>
-        </Wrap>
-      </section>
+      <StatsBand />
 
       {/* WHY */}
       <section className="py-24 lg:py-32">
@@ -121,9 +111,7 @@ export default function HomePage() {
             {differentiators.map((item, i) => (
               <Reveal key={item.title} delay={i * 70} className="bg-cream">
                 <div className="h-full bg-white-warm p-8">
-                  <span className="font-mono text-xs text-tan-deep">
-                    0{i + 1}
-                  </span>
+                  <Num>0{i + 1}</Num>
                   <h3 className="mt-5 text-xl">{item.title}</h3>
                   <p className="mt-3 text-sm text-ink-dim">{item.body}</p>
                 </div>
@@ -148,7 +136,7 @@ export default function HomePage() {
                   href="/services"
                   className="flex h-full flex-col justify-between border border-ink/10 bg-white-warm p-8 transition-colors hover:border-tan-deep"
                 >
-                  <span className="font-mono text-xs text-tan-deep">{service.num}</span>
+                  <Num>{service.num}</Num>
                   <div className="mt-10">
                     <h3 className="text-xl">{service.title}</h3>
                     <p className="mt-2 text-sm text-ink-dim">{service.summary}</p>
@@ -173,12 +161,11 @@ export default function HomePage() {
               <Reveal key={project.title} delay={i * 60}>
                 <Link href="/portfolio" className="group block">
                   <div className="relative aspect-4/3 overflow-hidden">
-                    <Image
+                    <CoverImage
                       src={project.image}
                       alt={project.alt}
-                      fill
                       sizes="(min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-coffee/80 to-transparent" />
                     <div className="absolute inset-x-0 bottom-0 p-6">
@@ -195,7 +182,7 @@ export default function HomePage() {
           <div className="mt-12">
             <Link
               href="/portfolio"
-              className="inline-flex border border-ink/15 px-6 py-3 text-xs font-semibold uppercase tracking-[0.06em] transition-colors hover:border-tan-deep hover:bg-cream-soft"
+              className={`inline-flex ${buttonClass("outline", "sm")}`}
             >
               See the full portfolio
             </Link>
@@ -217,9 +204,9 @@ export default function HomePage() {
             />
           </Reveal>
           <Reveal delay={80}>
-            <span className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-gold">
-              Material Spotlight
-            </span>
+            <Eyebrow>
+              <span className="text-gold">Material Spotlight</span>
+            </Eyebrow>
             <h2 className="mt-4 text-3xl text-cream sm:text-4xl">
               Sintered stone worktops, built to last
             </h2>
@@ -261,7 +248,7 @@ export default function HomePage() {
                 aria-hidden={i >= process.length}
                 className="w-[280px] shrink-0 border-t border-ink/15 pt-6"
               >
-                <span className="font-mono text-xs text-tan-deep">{step.num}</span>
+                <Num>{step.num}</Num>
                 <h4 className="mt-3 text-xl">{step.title}</h4>
                 <p className="mt-2 text-sm text-ink-dim">{step.body}</p>
               </div>
@@ -302,20 +289,7 @@ export default function HomePage() {
       {/* FAQ */}
       <section className="py-24 lg:py-32">
         <Wrap>
-          <SectionHead eyebrow="FAQ" title="Good to know before you book a visit" />
-          <div className="max-w-3xl divide-y divide-ink/10 border-y border-ink/10">
-            {faqs.map((faq) => (
-              <details key={faq.q} className="group py-5">
-                <summary className="flex cursor-pointer items-center justify-between gap-6 font-display text-lg">
-                  {faq.q}
-                  <span className="text-tan-deep transition-transform group-open:rotate-45">
-                    +
-                  </span>
-                </summary>
-                <p className="mt-3 max-w-[60ch] text-sm text-ink-dim">{faq.a}</p>
-              </details>
-            ))}
-          </div>
+          <FaqList />
         </Wrap>
       </section>
 
@@ -332,7 +306,7 @@ export default function HomePage() {
             </p>
             <Link
               href="/contact"
-              className="mt-8 inline-flex bg-cream px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.06em] text-coffee transition-colors hover:bg-white-warm"
+              className={`mt-8 inline-flex ${buttonClass("cream")}`}
             >
               Get a Quote
             </Link>

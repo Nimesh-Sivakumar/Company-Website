@@ -22,6 +22,24 @@ export function Eyebrow({ children }: { children: ReactNode }) {
   );
 }
 
+/** Space Mono field/definition label, e.g. form labels and contact rows. */
+export const fieldLabelClass =
+  "font-mono text-[0.65rem] uppercase tracking-[0.15em] text-ink-dim";
+
+export function Num({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <span className={`font-mono text-xs text-tan-deep ${className}`.trim()}>
+      {children}
+    </span>
+  );
+}
+
 export function SectionHead({
   eyebrow,
   title,

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { company, nav } from "@/lib/content";
+import { buttonClass } from "./Button";
 import InstagramIcon from "./InstagramIcon";
 
 export default function SiteNav() {
@@ -65,7 +66,7 @@ export default function SiteNav() {
           </a>
           <Link
             href="/contact"
-            className="hidden bg-tan-deep px-6 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-cream transition-colors hover:bg-coffee sm:inline-flex"
+            className={`hidden sm:inline-flex ${buttonClass("solid", "sm")}`}
           >
             Get a Quote
           </Link>
@@ -96,7 +97,7 @@ export default function SiteNav() {
           ))}
           <Link
             href="/contact"
-            className="mt-3 inline-flex bg-tan-deep px-6 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-cream"
+            className={`mt-3 inline-flex ${buttonClass("solid", "sm")}`}
           >
             Get a Quote
           </Link>

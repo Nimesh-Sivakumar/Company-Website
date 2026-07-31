@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
+import { buttonClass } from "@/components/Button";
+import CoverImage from "@/components/CoverImage";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
-import { Wrap } from "@/components/Section";
+import { Num, Wrap } from "@/components/Section";
 import { projects } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -29,9 +30,9 @@ export default function PortfolioPage() {
             <Reveal key={project.title}>
               <article className="grid gap-10 lg:grid-cols-[1fr_1.15fr]">
                 <div>
-                  <span className="font-mono text-xs text-tan-deep">
+                  <Num>
                     Project {project.num} — {project.location}
-                  </span>
+                  </Num>
                   <h2 className="mt-3 text-3xl sm:text-4xl">{project.title}</h2>
                   <p className="mt-5 text-ink-dim">{project.body}</p>
                   <div className="mt-7 flex flex-wrap gap-2">
@@ -46,12 +47,10 @@ export default function PortfolioPage() {
                   </div>
                 </div>
                 <div className="relative aspect-4/3">
-                  <Image
+                  <CoverImage
                     src={project.image}
                     alt={project.alt}
-                    fill
                     sizes="(min-width: 1024px) 55vw, 100vw"
-                    className="object-cover"
                   />
                 </div>
               </article>
@@ -68,7 +67,7 @@ export default function PortfolioPage() {
             </h2>
             <Link
               href="/contact"
-              className="mt-8 inline-flex bg-tan-deep px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.06em] text-cream transition-colors hover:bg-coffee"
+              className={`mt-8 inline-flex ${buttonClass()}`}
             >
               Book a free site visit
             </Link>

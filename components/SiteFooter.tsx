@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { company, nav } from "@/lib/content";
+import { buttonClass } from "./Button";
 import InstagramIcon from "./InstagramIcon";
+import { Eyebrow, Wrap } from "./Section";
 
 export default function SiteFooter() {
   return (
     <footer className="bg-coffee text-cream">
-      <div className="mx-auto max-w-[1240px] px-5 py-20 sm:px-8 lg:px-16">
+      <Wrap className="py-20">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
           <div>
-            <span className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-cream/60">
-              Get in touch
-            </span>
+            <Eyebrow>
+              <span className="text-cream/60">Get in touch</span>
+            </Eyebrow>
             <h2 className="mt-4 text-3xl text-cream sm:text-4xl">
               Let&apos;s talk about your space
             </h2>
@@ -49,7 +51,7 @@ export default function SiteFooter() {
               Site visits, work-in-progress and finished spaces — posted as projects
               happen.
             </p>
-            <span className="mt-6 inline-flex bg-cream px-6 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-coffee">
+            <span className={`mt-6 inline-flex ${buttonClass("cream", "sm")}`}>
               {company.instagramHandle} →
             </span>
           </a>
@@ -61,7 +63,7 @@ export default function SiteFooter() {
           </span>
           <span>Custom cabinetry & interior fit-outs</span>
         </div>
-      </div>
+      </Wrap>
     </footer>
   );
 }

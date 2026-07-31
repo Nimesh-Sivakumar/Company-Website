@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import QuoteForm from "@/components/QuoteForm";
-import { Eyebrow, Wrap } from "@/components/Section";
+import { Eyebrow, Num, Wrap, fieldLabelClass } from "@/components/Section";
 import { company, process } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -28,21 +28,15 @@ export default function ContactPage() {
             <h2 className="mt-4 text-3xl">Let&apos;s talk about your space</h2>
             <dl className="mt-8 space-y-4 text-sm">
               <div className="border-b border-ink/10 pb-4">
-                <dt className="font-mono text-[0.65rem] uppercase tracking-[0.15em] text-ink-dim">
-                  Studio
-                </dt>
+                <dt className={fieldLabelClass}>Studio</dt>
                 <dd className="mt-1">{company.name}</dd>
               </div>
               <div className="border-b border-ink/10 pb-4">
-                <dt className="font-mono text-[0.65rem] uppercase tracking-[0.15em] text-ink-dim">
-                  Coverage
-                </dt>
+                <dt className={fieldLabelClass}>Coverage</dt>
                 <dd className="mt-1">{company.coverage}</dd>
               </div>
               <div className="border-b border-ink/10 pb-4">
-                <dt className="font-mono text-[0.65rem] uppercase tracking-[0.15em] text-ink-dim">
-                  Instagram
-                </dt>
+                <dt className={fieldLabelClass}>Instagram</dt>
                 <dd className="mt-1">
                   <a
                     href={company.instagramUrl}
@@ -60,7 +54,7 @@ export default function ContactPage() {
             <ol className="mt-4 space-y-3 text-sm text-ink-dim">
               {process.slice(0, 3).map((step) => (
                 <li key={step.num} className="flex gap-3">
-                  <span className="font-mono text-xs text-tan-deep">{step.num}</span>
+                  <Num>{step.num}</Num>
                   <span>
                     <b className="text-ink">{step.title}</b> — {step.body}
                   </span>
