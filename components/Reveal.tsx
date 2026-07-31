@@ -17,9 +17,14 @@ export default function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      // Without the observer the content would stay at opacity-0 forever.
+      setInView(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        if (entries[0]?.isIntersecting) {
           setInView(true);
           observer.disconnect();
         }

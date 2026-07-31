@@ -9,6 +9,7 @@ type Status = "idle" | "sending" | "sent" | "error";
 
 export default function QuoteForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -22,16 +23,21 @@ export default function QuoteForm() {
     }
 
     setStatus("sending");
+    setErrorDetail(null);
     try {
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { Accept: "application/json" },
         body: data,
       });
-      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`Enquiry endpoint responded with ${response.status} ${response.statusText}`);
+      }
       setStatus("sent");
       form.reset();
-    } catch {
+    } catch (error) {
+      console.error("Quote form submission failed:", error);
+      setErrorDetail(error instanceof Error ? error.message : String(error));
       setStatus("error");
     }
   }
@@ -109,6 +115,9 @@ export default function QuoteForm() {
       {status === "error" && (
         <p role="alert" className="border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800 sm:col-span-2">
           Something went wrong sending your enquiry. Please message us on Instagram instead.
+          {errorDetail && (
+            <span className="mt-1 block font-mono text-[0.65rem] text-red-700/80">{errorDetail}</span>
+          )}
         </p>
       )}
     </form>

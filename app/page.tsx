@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import MaterialVideo from "@/components/MaterialVideo";
 import Reveal from "@/components/Reveal";
 import { asset } from "@/lib/asset";
 import { Eyebrow, SectionHead, Wrap } from "@/components/Section";
@@ -207,12 +208,9 @@ export default function HomePage() {
       <section className="bg-coffee py-24 text-cream lg:py-32">
         <Wrap className="grid items-center gap-14 lg:grid-cols-2">
           <Reveal>
-            <video
+            <MaterialVideo
               src={asset("/assets/sintered-stone.mp4")}
-              autoPlay
-              muted
-              loop
-              playsInline
+              poster="/assets/kitchen-02.jpg"
               className="w-full"
             />
           </Reveal>
