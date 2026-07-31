@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 import { Eyebrow, Wrap } from "./Section";
 
 export default function PageHero({
@@ -17,7 +18,7 @@ export default function PageHero({
   return (
     <section className="relative isolate flex min-h-[62vh] items-end overflow-hidden pb-16 pt-40">
       <Image
-        src={image}
+        src={asset(image)}
         alt={alt}
         fill
         priority
