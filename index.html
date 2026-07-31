@@ -26,6 +26,9 @@
     --line-light:rgba(246,239,225,0.18);
     --ease:cubic-bezier(.22,1,.36,1);
     --ease-pro:cubic-bezier(.76,0,.24,1);
+    --shadow-card:0 20px 50px rgba(42,29,18,0.08);
+    --shadow-media:0 30px 70px rgba(42,29,18,0.14);
+    --shadow-hero:0 50px 110px rgba(60,36,21,0.3);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
@@ -36,34 +39,45 @@
   button{font:inherit; background:none; border:none; cursor:pointer; color:inherit;}
   input,select,textarea{ font:inherit; color:inherit; }
   h1,h2,h3,h4{ font-family:'Fraunces', serif; font-weight:500; letter-spacing:-0.01em; line-height:1.05; color:var(--ink); }
-  .eyebrow{ font-family:'Space Mono', monospace; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--tan-deep); }
+  /* Shared mono label treatment used by eyebrows, step numbers and contact labels. */
+  .eyebrow,
+  .coll-card .num, .work-card .num, .detail-copy .num, .tl-step .num,
+  .contact-line b, .faq-item summary .plus, .logo span{
+    font-family:'Space Mono', monospace; letter-spacing:0.1em; text-transform:uppercase;
+  }
+  .eyebrow{ font-size:0.7rem; letter-spacing:0.2em; color:var(--tan-deep); }
+  /* Media that fills its frame. */
+  .zoomhero-frame img, .intro-photo img, .work-card img,
+  .detail-media img, .material-video video{ width:100%; height:100%; object-fit:cover; }
   .wrap{ max-width:1240px; margin:0 auto; padding:0 clamp(20px,5vw,64px); }
   section{ padding:clamp(80px,10vw,150px) 0; position:relative; }
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
   }
+  .icon-sprite{ position:absolute; width:0; height:0; overflow:hidden; }
   .reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
   .reveal.in-view{ opacity:1; transform:none; }
-  .btn-solid{ display:inline-flex; align-items:center; gap:10px; background:var(--tan-deep); color:var(--cream); padding:13px 26px; border-radius:2px; font-size:0.8rem; letter-spacing:0.06em; text-transform:uppercase; font-weight:600; transition:background .3s; }
+  .btn-solid, .btn-outline{ display:inline-flex; align-items:center; gap:10px; padding:13px 26px; border-radius:2px; font-size:0.8rem; letter-spacing:0.06em; text-transform:uppercase; font-weight:600; }
+  .btn-solid{ background:var(--tan-deep); color:var(--cream); transition:background .3s; }
   .btn-solid:hover{ background:var(--coffee); }
-  .btn-outline{ display:inline-flex; align-items:center; gap:10px; border:1px solid var(--line); color:var(--ink); padding:12px 24px; border-radius:2px; font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; font-weight:600; transition:border-color .3s, background .3s; }
-  .btn-outline:hover{ border-color:var(--tan-deep); background:var(--cream-soft); }
+  .btn-outline{ border:1px solid var(--line); color:var(--ink); padding:12px 24px; font-size:0.78rem; transition:border-color .3s, background .3s; }
+  /* Outlined pill/circle hover state. */
+  .btn-outline:hover, .icon-link:hover{ border-color:var(--tan-deep); background:var(--cream-soft); }
   .section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:30px; margin-bottom:50px; flex-wrap:wrap; }
-  .section-head h2{ font-size:clamp(2rem,3.6vw,2.9rem); max-width:16ch; }
+  .section-head h2, .intro-copy h2{ font-size:clamp(2rem,3.6vw,2.9rem); max-width:16ch; margin-top:14px; }
   .section-head p{ max-width:38ch; color:var(--ink-dim); }
 
   /* ---------- NAV ---------- */
   header.site-nav{ position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:24px clamp(20px,5vw,64px); transition:background .4s var(--ease), padding .4s var(--ease), box-shadow .4s var(--ease); }
   header.site-nav.solid{ background:rgba(246,239,225,0.92); backdrop-filter:blur(10px); padding-top:15px; padding-bottom:15px; box-shadow:0 1px 0 var(--line); }
   .logo{ font-family:'Fraunces', serif; font-weight:600; font-size:1.18rem; display:flex; flex-direction:column; color:var(--ink); }
-  .logo span{ font-family:'Space Mono', monospace; font-size:0.56rem; letter-spacing:0.18em; color:var(--tan-deep); font-weight:400; margin-top:2px; }
+  .logo span{ font-size:0.56rem; letter-spacing:0.18em; color:var(--tan-deep); font-weight:400; margin-top:2px; }
   nav.primary-links{ display:flex; gap:32px; }
   nav.primary-links a{ font-size:0.8rem; letter-spacing:0.05em; text-transform:uppercase; font-weight:600; position:relative; padding-bottom:4px; color:var(--ink); }
   nav.primary-links a::after{ content:''; position:absolute; left:0; bottom:0; height:1px; width:0; background:var(--tan-deep); transition:width .3s var(--ease); }
   nav.primary-links a:hover::after{ width:100%; }
   .nav-cta{ display:flex; align-items:center; gap:16px; }
   .icon-link{ width:34px; height:34px; border:1px solid var(--line); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:border-color .3s, background .3s; }
-  .icon-link:hover{ border-color:var(--tan-deep); background:var(--cream-soft); }
   .icon-link svg{ width:15px; height:15px; stroke:var(--ink); fill:none; stroke-width:1.4; }
   .menu-toggle{ display:none; flex-direction:column; gap:5px; width:26px; }
   .menu-toggle span{ height:1px; background:var(--ink); width:100%; }
@@ -77,8 +91,7 @@
   .zoomhero-copy h1 em{ font-style:italic; color:var(--tan-deep); }
   .zoomhero-copy p{ margin-top:22px; color:var(--ink-dim); max-width:42ch; font-size:1.02rem; }
   .zoomhero-copy .btn-solid{ margin-top:28px; }
-  .zoomhero-frame{ position:relative; width:36vw; max-width:480px; min-width:220px; aspect-ratio:3/4; overflow:hidden; z-index:1; border-radius:20px; box-shadow:0 50px 110px rgba(60,36,21,0.3); will-change:transform, border-radius; }
-  .zoomhero-frame img{ width:100%; height:100%; object-fit:cover; }
+  .zoomhero-frame{ position:relative; width:36vw; max-width:480px; min-width:220px; aspect-ratio:3/4; overflow:hidden; z-index:1; border-radius:20px; box-shadow:var(--shadow-hero); will-change:transform, border-radius; }
   .zoomhero-frame::after{ content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(60,36,21,0) 40%, rgba(30,18,10,0.78) 100%); }
   .zoomhero-tag{ position:absolute; left:0; right:0; bottom:60px; z-index:3; text-align:center; opacity:0; display:flex; flex-direction:column; align-items:center; gap:10px; }
   .zoomhero-tag .eyebrow{ color:var(--cream); }
@@ -88,8 +101,7 @@
   /* ---------- INTRO ---------- */
   .intro{ background:var(--white); }
   .intro-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:56px; align-items:center; }
-  .intro-photo{ border-radius:12px; overflow:hidden; aspect-ratio:4/5; box-shadow:0 30px 70px rgba(42,29,18,0.16); }
-  .intro-photo img{ width:100%; height:100%; object-fit:cover; }
+  .intro-photo{ border-radius:12px; overflow:hidden; aspect-ratio:4/5; box-shadow:var(--shadow-media); }
   .intro-copy p{ color:var(--ink-dim); max-width:52ch; margin-bottom:16px; }
 
   /* ---------- STATS BANNER ---------- */
@@ -101,7 +113,7 @@
   /* ---------- WHY CHOOSE US ---------- */
   .why{ background:var(--cream); }
   .why-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
-  .why-card{ background:var(--white); border-radius:10px; padding:32px 26px; box-shadow:0 20px 50px rgba(42,29,18,0.06); }
+  .why-card{ background:var(--white); border-radius:10px; padding:32px 26px; box-shadow:var(--shadow-card); }
   .why-card .icon{ width:48px; height:48px; border-radius:50%; background:var(--coffee-soft); display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
   .why-card .icon svg{ width:22px; height:22px; stroke:var(--tan-deep); fill:none; stroke-width:1.5; }
   .why-card h3{ font-size:1.1rem; margin-bottom:8px; }
@@ -120,7 +132,7 @@
   .coll-card:nth-child(4){ grid-column:span 2; grid-row:span 2; }
   .coll-card:nth-child(5){ grid-column:span 2; grid-row:span 2; }
   .coll-card:nth-child(6){ grid-column:span 3; grid-row:span 2; }
-  .coll-card .num{ font-family:'Space Mono', monospace; font-size:0.72rem; color:var(--gold-light); }
+  .coll-card .num{ font-size:0.72rem; color:var(--gold-light); }
   .coll-card h3{ font-size:1.3rem; font-weight:500; color:var(--cream); }
   .coll-card p{ font-size:0.8rem; color:rgba(246,239,225,0.65); margin-top:6px; }
   .coll-card svg{ position:absolute; right:-10px; bottom:-10px; width:52%; stroke:rgba(211,171,104,0.18); fill:none; stroke-width:1; transition:stroke .4s, transform .6s var(--ease); }
@@ -135,10 +147,10 @@
   .work-card:nth-child(2){ grid-column:span 2; }
   .work-card:nth-child(3){ grid-column:span 2; }
   .work-card:nth-child(4){ grid-column:span 4; }
-  .work-card img{ width:100%; height:100%; object-fit:cover; transition:transform .8s var(--ease-pro); }
+  .work-card img{ transition:transform .8s var(--ease-pro); }
   .work-card:hover img{ transform:scale(1.06); }
   .work-card .overlay{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(30,18,10,0) 45%, rgba(30,18,10,0.85) 100%); display:flex; flex-direction:column; justify-content:flex-end; padding:24px; }
-  .work-card .num{ font-family:'Space Mono', monospace; font-size:0.7rem; color:var(--gold-light); margin-bottom:6px; }
+  .work-card .num{ font-size:0.7rem; color:var(--gold-light); margin-bottom:6px; }
   .work-card h3{ font-size:1.2rem; font-weight:500; color:var(--cream); }
 
   /* ---------- IN DETAIL (editorial rows) ---------- */
@@ -148,11 +160,11 @@
   .detail-row.reverse{ grid-template-columns:0.9fr 1.1fr; }
   .detail-row.reverse .detail-copy{ order:2; }
   .detail-row.reverse .detail-media{ order:1; }
-  .detail-media{ border-radius:12px; overflow:hidden; box-shadow:0 30px 70px rgba(42,29,18,0.14); }
-  .detail-media img{ width:100%; height:100%; object-fit:cover; aspect-ratio:5/4; }
+  .detail-media{ border-radius:12px; overflow:hidden; box-shadow:var(--shadow-media); }
+  .detail-media img{ aspect-ratio:5/4; }
   .detail-media.split{ display:grid; grid-template-columns:1fr 1fr; gap:8px; box-shadow:none; }
-  .detail-media.split img{ aspect-ratio:3/4; border-radius:12px; box-shadow:0 30px 70px rgba(42,29,18,0.14); }
-  .detail-copy .num{ font-family:'Space Mono', monospace; color:var(--tan-deep); font-size:0.75rem; letter-spacing:0.1em; }
+  .detail-media.split img{ aspect-ratio:3/4; border-radius:12px; box-shadow:var(--shadow-media); }
+  .detail-copy .num{ color:var(--tan-deep); font-size:0.75rem; }
   .detail-copy h3{ font-size:clamp(1.6rem,2.6vw,2.2rem); margin:14px 0 16px; max-width:16ch; }
   .detail-copy p{ color:var(--ink-dim); max-width:48ch; margin-bottom:14px; }
   .detail-tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
@@ -162,7 +174,6 @@
   .material{ background:var(--cream-soft); }
   .material-grid{ display:grid; grid-template-columns:0.85fr 1.15fr; gap:56px; align-items:center; }
   .material-video{ position:relative; aspect-ratio:9/16; max-width:300px; margin:0 auto; border-radius:20px; overflow:hidden; border:6px solid var(--white); box-shadow:0 40px 90px rgba(42,29,18,0.2); }
-  .material-video video{ width:100%; height:100%; object-fit:cover; }
   .material-copy h2{ font-size:clamp(1.9rem,3vw,2.6rem); max-width:16ch; margin:16px 0 18px; }
   .material-copy p{ color:var(--ink-dim); max-width:50ch; margin-bottom:14px; }
   .material-list{ margin-top:24px; display:flex; flex-direction:column; gap:12px; }
@@ -179,14 +190,14 @@
   .tl-step{ flex:0 0 260px; position:relative; padding:28px 24px 6px 0; }
   .tl-step .tl-line{ height:1px; background:var(--line); position:relative; margin-bottom:22px; }
   .tl-step .tl-line::before{ content:''; position:absolute; left:0; top:-4px; width:9px; height:9px; border-radius:50%; background:var(--tan-deep); }
-  .tl-step .num{ font-family:'Space Mono', monospace; color:var(--tan-deep); font-size:0.78rem; }
+  .tl-step .num{ color:var(--tan-deep); font-size:0.78rem; }
   .tl-step h4{ font-size:1.1rem; margin:10px 0 8px; font-weight:500; }
   .tl-step p{ font-size:0.86rem; color:var(--ink-dim); max-width:22ch; }
 
   /* ---------- TESTIMONIALS ---------- */
   .testimonials{ background:var(--coffee-soft); }
   .t-row{ display:flex; gap:22px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:10px; }
-  .t-card{ flex:0 0 auto; scroll-snap-align:start; width:min(380px, 84vw); background:var(--white); border-radius:10px; padding:32px; box-shadow:0 20px 50px rgba(42,29,18,0.08); }
+  .t-card{ flex:0 0 auto; scroll-snap-align:start; width:min(380px, 84vw); background:var(--white); border-radius:10px; padding:32px; box-shadow:var(--shadow-card); }
   .t-stars{ color:var(--gold); margin-bottom:16px; letter-spacing:2px; }
   .t-card p.quote{ font-family:'Fraunces', serif; font-size:1.08rem; font-weight:400; color:var(--ink); margin-bottom:20px; }
   .t-who{ font-size:0.8rem; color:var(--ink-dim); }
@@ -199,7 +210,7 @@
   .quote-copy h2{ font-size:clamp(1.8rem,3vw,2.4rem); max-width:14ch; margin:14px 0 16px; }
   .quote-copy p{ color:var(--ink-dim); max-width:36ch; }
   .quote-copy .contact-line{ display:flex; gap:12px; margin-top:24px; font-size:0.9rem; color:var(--ink-dim); }
-  .quote-copy .contact-line b{ min-width:80px; display:inline-block; font-family:'Space Mono',monospace; font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink); }
+  .quote-copy .contact-line b{ min-width:80px; font-size:0.68rem; letter-spacing:0.06em; color:var(--ink); }
   .quote-form{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   .quote-form .full{ grid-column:1 / -1; }
   .quote-form label{ display:block; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:6px; }
@@ -218,7 +229,7 @@
   .faq-item:last-child{ border-bottom:1px solid var(--line); }
   .faq-item summary{ cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between; padding:24px 4px; font-family:'Fraunces', serif; font-size:1.1rem; font-weight:500; }
   .faq-item summary::-webkit-details-marker{ display:none; }
-  .faq-item summary .plus{ font-family:'Space Mono', monospace; font-size:1.2rem; color:var(--tan-deep); transition:transform .3s var(--ease); flex-shrink:0; margin-left:20px; }
+  .faq-item summary .plus{ font-size:1.2rem; color:var(--tan-deep); transition:transform .3s var(--ease); flex-shrink:0; margin-left:20px; }
   .faq-item[open] summary .plus{ transform:rotate(45deg); }
   .faq-item .faq-a{ padding:0 4px 26px; max-width:64ch; color:var(--ink-dim); font-size:0.95rem; }
 
@@ -228,7 +239,7 @@
   .contact-info .eyebrow{ color:var(--gold-light); }
   .contact-info h2{ color:var(--cream); font-size:clamp(1.9rem,3vw,2.5rem); max-width:14ch; margin:14px 0 22px; }
   .contact-line{ display:flex; gap:14px; margin-bottom:14px; font-size:0.95rem; color:rgba(246,239,225,0.75); }
-  .contact-line b{ color:var(--cream); font-weight:500; min-width:90px; display:inline-block; font-family:'Space Mono',monospace; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; }
+  .contact-line b{ color:var(--cream); font-weight:500; min-width:90px; display:inline-block; font-size:0.7rem; letter-spacing:0.08em; }
   .ig-card{ border:1px solid var(--line-light); border-radius:10px; padding:36px; display:flex; flex-direction:column; align-items:flex-start; gap:16px; background:rgba(246,239,225,0.05); }
   .ig-card svg{ width:30px; height:30px; stroke:var(--gold-light); fill:none; stroke-width:1.3; }
   .ig-card h3{ font-size:1.3rem; font-weight:500; color:var(--cream); }
@@ -259,6 +270,13 @@
 </head>
 <body>
 
+<!-- Shared icon sprite — referenced with <svg><use href="#icon-*"></svg>. -->
+<svg class="icon-sprite" aria-hidden="true" focusable="false">
+  <symbol id="icon-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6"/></symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></symbol>
+  <symbol id="icon-arrow-down" viewBox="0 0 24 24"><path d="M12 4v16M6 14l6 6 6-6"/></symbol>
+</svg>
+
 <header class="site-nav" id="siteNav">
   <a href="#top" class="logo">CABINET CREATION CO. <span>KUALA LUMPUR &amp; SELANGOR</span></a>
   <nav class="primary-links">
@@ -269,7 +287,7 @@
   </nav>
   <div class="nav-cta">
     <a href="https://www.instagram.com/cabinetcreation.kl" target="_blank" rel="noopener" class="icon-link" aria-label="Instagram">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6"/></svg>
+      <svg><use href="#icon-instagram"></use></svg>
     </a>
     <a href="#quote" class="btn-solid">Get a Quote</a>
     <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
@@ -290,7 +308,7 @@
     </div>
     <div class="zoomhero-tag" id="zoomTag">
       <span class="eyebrow">Selected Work</span>
-      <svg viewBox="0 0 24 24"><path d="M12 4v16M6 14l6 6 6-6"/></svg>
+      <svg><use href="#icon-arrow-down"></use></svg>
     </div>
   </div>
 </section>
@@ -301,7 +319,7 @@
     <div class="intro-photo reveal"><img src="assets/kitchen-02.jpg" alt="Light timber kitchen with dining island"></div>
     <div class="intro-copy reveal">
       <span class="eyebrow">About the studio</span>
-      <h2 style="margin-top:14px;">A cabinetry studio for homes that actually get lived in</h2>
+      <h2>A cabinetry studio for homes that actually get lived in</h2>
       <p>Cabinet Creation Co. designs and builds kitchens, wardrobes and interior fit-outs for homeowners across the Klang Valley. Every project starts with a site measurement, not a template — so what you approve on the drawing is exactly what gets installed.</p>
       <p>From wet-and-dry kitchen layouts to walk-in wardrobes and full living-space built-ins, we carry each job through design, fabrication and installation with one team, start to finish.</p>
       <a href="#detail" class="btn-outline" style="margin-top:10px;">See our work in detail</a>
@@ -323,7 +341,7 @@
 <section class="why">
   <div class="wrap">
     <div class="section-head reveal">
-      <div><span class="eyebrow">Why Cabinet Creation Co.</span><h2 style="margin-top:14px;">Built around how you'll actually use the space</h2></div>
+      <div><span class="eyebrow">Why Cabinet Creation Co.</span><h2>Built around how you'll actually use the space</h2></div>
       <p>The details that make the difference between a nice render and a kitchen that works.</p>
     </div>
     <div class="why-grid reveal">
@@ -355,7 +373,7 @@
 <section class="collections" id="collections">
   <div class="wrap">
     <div class="section-head reveal">
-      <div><span class="eyebrow">Collections</span><h2 style="margin-top:14px;">What we design &amp; build</h2></div>
+      <div><span class="eyebrow">Collections</span><h2>What we design &amp; build</h2></div>
       <p>Every project falls into one of these collections — each with its own scope, pace and finish.</p>
     </div>
     <div class="coll-grid reveal">
@@ -373,7 +391,7 @@
 <section class="work" id="work">
   <div class="wrap">
     <div class="section-head reveal">
-      <div><span class="eyebrow">Selected Work</span><h2 style="margin-top:14px;">Recent kitchens, wardrobes &amp; built-ins</h2></div>
+      <div><span class="eyebrow">Selected Work</span><h2>Recent kitchens, wardrobes &amp; built-ins</h2></div>
       <p>A few fit-outs from recent projects around the Klang Valley.</p>
     </div>
     <div class="work-grid reveal">
@@ -389,7 +407,7 @@
 <section class="detail" id="detail">
   <div class="wrap">
     <div class="section-head reveal">
-      <div><span class="eyebrow">In Detail</span><h2 style="margin-top:14px;">A closer look at three recent projects</h2></div>
+      <div><span class="eyebrow">In Detail</span><h2>A closer look at three recent projects</h2></div>
     </div>
 
     <div class="detail-row reveal">
@@ -437,9 +455,9 @@
       <p>For countertops and island tops, we work extensively with sintered stone — a dense, low-porosity surface that resists heat, scratching and staining far better than standard quartz.</p>
       <p>It gives a clean, seamless finish with none of the joint lines or upkeep that natural stone demands, so the island stays the centrepiece of the kitchen for years, not just the first year.</p>
       <ul class="material-list">
-        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg>Heat and scratch resistant surface</li>
-        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg>Non-porous — resists staining, no sealing needed</li>
-        <li><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg>Seamless joints for a clean, continuous look</li>
+        <li><svg><use href="#icon-check"></use></svg>Heat and scratch resistant surface</li>
+        <li><svg><use href="#icon-check"></use></svg>Non-porous — resists staining, no sealing needed</li>
+        <li><svg><use href="#icon-check"></use></svg>Seamless joints for a clean, continuous look</li>
       </ul>
     </div>
   </div>
@@ -449,7 +467,7 @@
 <section class="process" id="process">
   <div class="wrap">
     <div class="section-head reveal">
-      <div><span class="eyebrow">Working Process</span><h2 style="margin-top:14px;">From first measurement to handover</h2></div>
+      <div><span class="eyebrow">Working Process</span><h2>From first measurement to handover</h2></div>
       <p>The same six steps for every project — scrolling on its own, hover to pause.</p>
     </div>
   </div>
@@ -461,13 +479,7 @@
       <div class="tl-step"><div class="tl-line"></div><span class="num">04</span><h4>Fabrication</h4><p>Cabinetry built to spec in our workshop.</p></div>
       <div class="tl-step"><div class="tl-line"></div><span class="num">05</span><h4>Installation</h4><p>On-site fit-out, run to the agreed schedule.</p></div>
       <div class="tl-step"><div class="tl-line"></div><span class="num">06</span><h4>Handover</h4><p>Final walkthrough, backed by warranty.</p></div>
-      <!-- duplicate set for seamless loop -->
-      <div class="tl-step" aria-hidden="true"><div class="tl-line"></div><span class="num">01</span><h4>Site Visit</h4><p>Measurement and requirements briefing at your home.</p></div>
-      <div class="tl-step" aria-hidden="true"><div class="tl-line"></div><span class="num">02</span><h4>Design</h4><p>Layout, materials and an estimated quotation.</p></div>
-      <div class="tl-step" aria-hidden="true"><div class="tl-line"></div><span class="num">03</span><h4>3D Rendering</h4><p>Full visual walkthrough before anything is built.</p></div>
-      <div class="tl-step" aria-hidden="true"><div class="tl-line"></div><span class="num">04</span><h4>Fabrication</h4><p>Cabinetry built to spec in our workshop.</p></div>
-      <div class="tl-step" aria-hidden="true"><div class="tl-line"></div><span class="num">05</span><h4>Installation</h4><p>On-site fit-out, run to the agreed schedule.</p></div>
-      <div class="tl-step" aria-hidden="true"><div class="tl-line"></div><span class="num">06</span><h4>Handover</h4><p>Final walkthrough, backed by warranty.</p></div>
+      <!-- A mirrored, aria-hidden copy of these steps is appended by script for the seamless loop. -->
     </div>
   </div>
 </section>
@@ -476,7 +488,7 @@
 <section class="testimonials">
   <div class="wrap">
     <div class="section-head reveal">
-      <div><span class="eyebrow">Client Feedback</span><h2 style="margin-top:14px;">What it's like to work with us</h2></div>
+      <div><span class="eyebrow">Client Feedback</span><h2>What it's like to work with us</h2></div>
     </div>
     <div class="t-row reveal">
       <div class="t-card"><div class="t-stars">★★★★★</div><p class="quote">"The team measured everything themselves and the final kitchen matched the 3D render almost exactly. No surprises on install day."</p><div class="t-who"><b>Placeholder Review</b>Kitchen renovation, Puchong</div></div>
@@ -523,7 +535,7 @@
 <!-- ============ FAQ ============ -->
 <section class="faq" id="faq">
   <div class="wrap">
-    <div class="section-head reveal"><div><span class="eyebrow">FAQ</span><h2 style="margin-top:14px;">Good to know before you book a visit</h2></div></div>
+    <div class="section-head reveal"><div><span class="eyebrow">FAQ</span><h2>Good to know before you book a visit</h2></div></div>
     <div class="faq-list reveal">
       <details class="faq-item" open><summary>What areas do you cover? <span class="plus">+</span></summary><div class="faq-a">We work on projects across Kuala Lumpur and Selangor, including Puchong, Subang, Petaling Jaya and the wider Klang Valley.</div></details>
       <details class="faq-item"><summary>How long does a full kitchen fit-out take? <span class="plus">+</span></summary><div class="faq-a">Most kitchens run 4–8 weeks from confirmed design to handover, depending on scope and material lead times. Wardrobes and smaller built-ins are typically quicker.</div></details>
@@ -545,7 +557,7 @@
         <div class="contact-line"><b>Instagram</b> @cabinetcreation.kl</div>
       </div>
       <a class="ig-card reveal" href="https://www.instagram.com/cabinetcreation.kl" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6"/></svg>
+        <svg><use href="#icon-instagram"></use></svg>
         <h3>Follow the process</h3>
         <p>Site visits, work-in-progress and finished spaces — posted as projects happen.</p>
         <span class="btn-solid">@cabinetcreation.kl →</span>
@@ -559,10 +571,17 @@
 </footer>
 
 <script>
-  const nav = document.getElementById('siteNav');
+  const byId = (id) => document.getElementById(id);
+  /** Clamps a value into the 0..1 range. */
+  const clamp01 = (v) => Math.min(Math.max(v, 0), 1);
+  /** Normalises `progress` against the [start, start + span] window, clamped to 0..1. */
+  const phase = (progress, start, span) => clamp01((progress - start) / span);
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const nav = byId('siteNav');
   window.addEventListener('scroll', () => nav.classList.toggle('solid', window.scrollY > 40));
 
-  const toggle = document.getElementById('menuToggle');
+  const toggle = byId('menuToggle');
   const links = document.querySelector('.primary-links');
   toggle.addEventListener('click', () => {
     const open = links.style.display === 'flex';
@@ -574,22 +593,31 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+  // The marquee needs a second copy of the steps so translateX(-50%) loops seamlessly.
+  const tlTrack = byId('tlTrack');
+  if (tlTrack && !prefersReducedMotion) {
+    [...tlTrack.children].forEach(step => {
+      const copy = step.cloneNode(true);
+      copy.setAttribute('aria-hidden', 'true');
+      tlTrack.appendChild(copy);
+    });
+  }
+
   // Quote form preview-only submit
-  const quoteForm = document.getElementById('quoteForm');
-  const formSuccess = document.getElementById('formSuccess');
+  const quoteForm = byId('quoteForm');
+  const formSuccess = byId('formSuccess');
   quoteForm.addEventListener('submit', (e) => {
     e.preventDefault();
     formSuccess.classList.add('show');
   });
 
   // ---- Zoom-through hero ----
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const zoomSection = document.querySelector('.zoomhero');
-  const zoomCopy = document.getElementById('zoomCopy');
-  const zoomFrame = document.getElementById('zoomFrame');
-  const zoomTag = document.getElementById('zoomTag');
+  const zoomCopy = byId('zoomCopy');
+  const zoomFrame = byId('zoomFrame');
+  const zoomTag = byId('zoomTag');
 
-  if (!reduceMotion && zoomSection) {
+  if (!prefersReducedMotion && zoomSection) {
     let baseW = 0, baseH = 0, scaleTarget = 1, ticking = false;
     function measure(){
       zoomFrame.style.transform = 'none';
@@ -603,17 +631,15 @@
     function update(){
       const rect = zoomSection.getBoundingClientRect();
       const total = zoomSection.offsetHeight - window.innerHeight;
-      const progress = Math.min(Math.max(-rect.top / total, 0), 1);
-      const fadeT = Math.min(progress / 0.35, 1);
+      const progress = clamp01(-rect.top / total);
+      const fadeT = phase(progress, 0, 0.35);
       zoomCopy.style.opacity = String(1 - fadeT);
       zoomCopy.style.transform = `translateY(${-40 * fadeT}px)`;
-      const growT = Math.min(Math.max((progress - 0.05) / 0.72, 0), 1);
-      const eased = ease(growT);
+      const eased = ease(phase(progress, 0.05, 0.72));
       const scale = 1 + (scaleTarget - 1) * eased;
       zoomFrame.style.transform = `scale(${scale})`;
       zoomFrame.style.borderRadius = `${20 * (1 - eased)}px`;
-      const tagT = Math.min(Math.max((progress - 0.7) / 0.22, 0), 1);
-      zoomTag.style.opacity = String(tagT);
+      zoomTag.style.opacity = String(phase(progress, 0.7, 0.22));
       ticking = false;
     }
     window.addEventListener('scroll', () => { if (!ticking){ requestAnimationFrame(update); ticking = true; } });
