@@ -210,6 +210,12 @@
   .form-note{ grid-column:1/-1; font-size:0.78rem; color:var(--ink-dim); }
   .form-success{ display:none; grid-column:1/-1; background:var(--coffee-soft); border-radius:6px; padding:16px 18px; font-size:0.9rem; }
   .form-success.show{ display:block; }
+  .form-error{ display:none; grid-column:1/-1; background:#fbeceb; border:1px solid #e3b6b1; color:#8a2b21; border-radius:6px; padding:16px 18px; font-size:0.9rem; }
+  .form-error.show{ display:block; }
+  .media-failed{ background:var(--coffee-soft); }
+  .media-failed img, .media-failed video{ visibility:hidden; }
+  /* Without JS or IntersectionObserver support, reveal content instead of hiding it. */
+  .no-reveal-observer .reveal{ opacity:1; transform:none; }
 
   /* ---------- FAQ ---------- */
   .faq{ background:var(--cream); }
@@ -499,10 +505,10 @@
         <div class="contact-line"><b>Instagram</b> @cabinetcreation.kl</div>
       </div>
       <form class="quote-form" id="quoteForm">
-        <div><label for="qName">Name</label><input id="qName" type="text" required placeholder="Your name"></div>
-        <div><label for="qPhone">Phone / WhatsApp</label><input id="qPhone" type="tel" required placeholder="+60"></div>
+        <div><label for="qName">Name</label><input id="qName" name="name" type="text" required placeholder="Your name"></div>
+        <div><label for="qPhone">Phone / WhatsApp</label><input id="qPhone" name="phone" type="tel" required placeholder="+60"></div>
         <div class="full"><label for="qType">Project Type</label>
-          <select id="qType">
+          <select id="qType" name="projectType">
             <option>Wet &amp; Dry Kitchen</option>
             <option>Wardrobe / Walk-in</option>
             <option>Living &amp; TV Feature Wall</option>
@@ -511,10 +517,11 @@
             <option>Full Home Renovation</option>
           </select>
         </div>
-        <div class="full"><label for="qMsg">A little about the space</label><textarea id="qMsg" placeholder="Rough size, location, timeline..."></textarea></div>
+        <div class="full"><label for="qMsg">A little about the space</label><textarea id="qMsg" name="message" placeholder="Rough size, location, timeline..."></textarea></div>
         <div class="full form-note">This form doesn't send anywhere yet — connect it to your email or WhatsApp before publishing.</div>
-        <div class="full"><button type="submit" class="btn-solid">Send Enquiry</button></div>
-        <div class="form-success" id="formSuccess">Thanks — this is a preview confirmation. Hook this form up to email or WhatsApp to receive real enquiries.</div>
+        <div class="full"><button type="submit" class="btn-solid" id="quoteSubmit">Send Enquiry</button></div>
+        <div class="form-success" id="formSuccess" role="status" aria-live="polite">Thanks — this is a preview confirmation. Hook this form up to email or WhatsApp to receive real enquiries.</div>
+        <div class="form-error" id="formError" role="alert" aria-live="assertive"></div>
       </form>
     </div>
   </div>
@@ -559,68 +566,166 @@
 </footer>
 
 <script>
-  const nav = document.getElementById('siteNav');
-  window.addEventListener('scroll', () => nav.classList.toggle('solid', window.scrollY > 40));
+  // Set this to a form endpoint (Formspree, Netlify Forms, your own API) to send
+  // real enquiries. While null the form stays in preview mode and says so.
+  const QUOTE_ENDPOINT = null;
 
-  const toggle = document.getElementById('menuToggle');
-  const links = document.querySelector('.primary-links');
-  toggle.addEventListener('click', () => {
-    const open = links.style.display === 'flex';
-    links.style.cssText = open ? '' : 'display:flex;flex-direction:column;position:fixed;top:66px;left:0;right:0;background:rgba(246,239,225,0.97);padding:24px;gap:20px;box-shadow:0 10px 30px rgba(42,29,18,0.08);';
+  // Each feature runs in isolation so a failure in one never stops the others.
+  function feature(name, fn){
+    try { fn(); }
+    catch (err) { console.error(`[site] "${name}" failed to initialise:`, err); }
+  }
+
+  function required(selector, name){
+    const el = document.querySelector(selector);
+    if (!el) throw new Error(`${name} (${selector}) is missing from the page`);
+    return el;
+  }
+
+  feature('sticky nav', () => {
+    const nav = required('#siteNav', 'Site header');
+    window.addEventListener('scroll', () => nav.classList.toggle('solid', window.scrollY > 40));
   });
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('in-view'); });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-  // Quote form preview-only submit
-  const quoteForm = document.getElementById('quoteForm');
-  const formSuccess = document.getElementById('formSuccess');
-  quoteForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    formSuccess.classList.add('show');
+  feature('mobile menu', () => {
+    const toggle = required('#menuToggle', 'Menu toggle button');
+    const links = required('.primary-links', 'Primary navigation');
+    toggle.addEventListener('click', () => {
+      const open = links.style.display === 'flex';
+      links.style.cssText = open ? '' : 'display:flex;flex-direction:column;position:fixed;top:66px;left:0;right:0;background:rgba(246,239,225,0.97);padding:24px;gap:20px;box-shadow:0 10px 30px rgba(42,29,18,0.08);';
+    });
   });
 
-  // ---- Zoom-through hero ----
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const zoomSection = document.querySelector('.zoomhero');
-  const zoomCopy = document.getElementById('zoomCopy');
-  const zoomFrame = document.getElementById('zoomFrame');
-  const zoomTag = document.getElementById('zoomTag');
+  feature('scroll reveal', () => {
+    const targets = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      // Without the observer the reveal elements would stay invisible forever.
+      document.documentElement.classList.add('no-reveal-observer');
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('in-view'); });
+    }, { threshold: 0.15 });
+    targets.forEach(el => io.observe(el));
+  });
 
-  if (!reduceMotion && zoomSection) {
-    let baseW = 0, baseH = 0, scaleTarget = 1, ticking = false;
+  feature('media fallbacks', () => {
+    document.querySelectorAll('img, video').forEach(el => {
+      el.addEventListener('error', () => {
+        const src = el.currentSrc || el.getAttribute('src') || '(unknown source)';
+        console.error(`[site] media failed to load: ${src}`);
+        (el.parentElement || el).classList.add('media-failed');
+      }, true);
+    });
+  });
+
+  feature('quote form', () => {
+    const quoteForm = required('#quoteForm', 'Quote form');
+    const formSuccess = required('#formSuccess', 'Quote form success message');
+    const formError = required('#formError', 'Quote form error message');
+    const submitBtn = quoteForm.querySelector('#quoteSubmit');
+
+    function showError(message){
+      formSuccess.classList.remove('show');
+      formError.textContent = message;
+      formError.classList.add('show');
+    }
+
+    function showSuccess(message){
+      formError.classList.remove('show');
+      formSuccess.textContent = message;
+      formSuccess.classList.add('show');
+    }
+
+    quoteForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      formError.classList.remove('show');
+
+      if (!quoteForm.checkValidity()) {
+        quoteForm.reportValidity();
+        showError('Please fill in your name and phone number so we can reach you.');
+        return;
+      }
+
+      if (!QUOTE_ENDPOINT) {
+        showSuccess('Preview only — this form is not connected yet, so nothing was sent. Please reach us on Instagram @cabinetcreation.kl in the meantime.');
+        return;
+      }
+
+      if (submitBtn) submitBtn.disabled = true;
+      try {
+        const response = await fetch(QUOTE_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(quoteForm)
+        });
+        if (!response.ok) throw new Error(`Enquiry endpoint responded with ${response.status} ${response.statusText}`);
+        showSuccess('Thanks — your enquiry is on its way. We\'ll follow up to arrange a site visit.');
+        quoteForm.reset();
+      } catch (err) {
+        console.error('[site] quote form submission failed:', err);
+        showError('Sorry — we couldn\'t send your enquiry. Please try again, or message us on Instagram @cabinetcreation.kl.');
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  });
+
+  feature('zoom-through hero', () => {
+    const reduceMotion = typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const zoomSection = document.querySelector('.zoomhero');
+    const zoomCopy = document.getElementById('zoomCopy');
+    const zoomFrame = document.getElementById('zoomFrame');
+    const zoomTag = document.getElementById('zoomTag');
+    const animatable = zoomSection && zoomCopy && zoomFrame && zoomTag;
+
+    if (!animatable) {
+      console.warn('[site] zoom hero markup incomplete; falling back to the static hero.');
+    }
+
+    if (reduceMotion || !animatable) {
+      if (zoomTag) zoomTag.style.opacity = '1';
+      return;
+    }
+
+    let scaleTarget = 1, ticking = false;
     function measure(){
       zoomFrame.style.transform = 'none';
       const r = zoomFrame.getBoundingClientRect();
-      baseW = r.width; baseH = r.height;
-      scaleTarget = Math.max(window.innerWidth / baseW, window.innerHeight / baseH) * 1.04;
+      // A zero-sized frame (hidden section, images not laid out yet) would make
+      // the scale target Infinity, so keep the frame at its natural size instead.
+      scaleTarget = (r.width > 0 && r.height > 0)
+        ? Math.max(window.innerWidth / r.width, window.innerHeight / r.height) * 1.04
+        : 1;
     }
-    measure();
-    window.addEventListener('resize', measure);
     function ease(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
     function update(){
+      ticking = false;
       const rect = zoomSection.getBoundingClientRect();
       const total = zoomSection.offsetHeight - window.innerHeight;
-      const progress = Math.min(Math.max(-rect.top / total, 0), 1);
+      // Nothing to scrub through when the section is not taller than the viewport.
+      const progress = total > 0 ? Math.min(Math.max(-rect.top / total, 0), 1) : 0;
       const fadeT = Math.min(progress / 0.35, 1);
       zoomCopy.style.opacity = String(1 - fadeT);
       zoomCopy.style.transform = `translateY(${-40 * fadeT}px)`;
       const growT = Math.min(Math.max((progress - 0.05) / 0.72, 0), 1);
       const eased = ease(growT);
-      const scale = 1 + (scaleTarget - 1) * eased;
-      zoomFrame.style.transform = `scale(${scale})`;
+      zoomFrame.style.transform = `scale(${1 + (scaleTarget - 1) * eased})`;
       zoomFrame.style.borderRadius = `${20 * (1 - eased)}px`;
       const tagT = Math.min(Math.max((progress - 0.7) / 0.22, 0), 1);
       zoomTag.style.opacity = String(tagT);
-      ticking = false;
     }
-    window.addEventListener('scroll', () => { if (!ticking){ requestAnimationFrame(update); ticking = true; } });
+    function schedule(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => feature('zoom-through hero frame', update));
+    }
+    measure();
+    window.addEventListener('resize', () => feature('zoom-through hero resize', () => { measure(); update(); }));
+    window.addEventListener('scroll', schedule);
     update();
-  } else if (zoomTag) {
-    zoomTag.style.opacity = '1';
-  }
+  });
 </script>
 </body>
 </html>
