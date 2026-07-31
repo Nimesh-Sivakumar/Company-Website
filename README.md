@@ -32,6 +32,17 @@ npm run lint
 npm run build    # static export to ./out
 ```
 
+## Tests
+
+Unit tests run on Vitest + Testing Library in a jsdom environment and cover `lib/` and `components/`.
+
+```bash
+npm test          # run the unit tests
+npm run coverage  # run with a coverage report
+```
+
+`.github/workflows/tests.yml` runs lint and the test suite on every pull request.
+
 ## Environment variables
 
 | Variable | Purpose |
