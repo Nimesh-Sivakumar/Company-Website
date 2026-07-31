@@ -63,7 +63,7 @@ export default function HomePage() {
         <Wrap className="grid items-center gap-14 lg:grid-cols-2">
           <Reveal>
             <Image
-              src="/assets/kitchen-02.jpg"
+              src={asset("/assets/kitchen-02.jpg")}
               alt="Light timber kitchen with dining island"
               width={900}
               height={1100}

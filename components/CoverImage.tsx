@@ -1,6 +1,7 @@
 import Image from "next/image";
+import { asset } from "@/lib/asset";
 
-/** Image that fills its (positioned) parent and crops to cover. */
+/** Image that fills its (positioned) parent and crops to cover, basePath-aware. */
 export default function CoverImage({
   src,
   alt,
@@ -16,7 +17,7 @@ export default function CoverImage({
 }) {
   return (
     <Image
-      src={src}
+      src={asset(src)}
       alt={alt}
       fill
       priority={priority}
