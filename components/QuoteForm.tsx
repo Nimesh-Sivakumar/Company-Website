@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { buttonClass } from "./Button";
+import { fieldLabelClass } from "./Section";
 import { projectTypes } from "@/lib/content";
 
 const endpoint = process.env.NEXT_PUBLIC_FORM_ENDPOINT;
@@ -38,30 +40,29 @@ export default function QuoteForm() {
 
   const field =
     "mt-2 w-full border border-ink/15 bg-white-warm px-4 py-3 text-sm outline-none transition-colors focus:border-tan-deep";
-  const label = "font-mono text-[0.65rem] uppercase tracking-[0.15em] text-ink-dim";
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-6 sm:grid-cols-2">
       <div>
-        <label htmlFor="name" className={label}>
+        <label htmlFor="name" className={fieldLabelClass}>
           Name
         </label>
         <input id="name" name="name" type="text" required placeholder="Your name" className={field} />
       </div>
       <div>
-        <label htmlFor="phone" className={label}>
+        <label htmlFor="phone" className={fieldLabelClass}>
           Phone / WhatsApp
         </label>
         <input id="phone" name="phone" type="tel" required placeholder="+60" className={field} />
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor="email" className={label}>
+        <label htmlFor="email" className={fieldLabelClass}>
           Email
         </label>
         <input id="email" name="email" type="email" placeholder="you@example.com" className={field} />
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor="projectType" className={label}>
+        <label htmlFor="projectType" className={fieldLabelClass}>
           Project Type
         </label>
         <select id="projectType" name="projectType" className={field} defaultValue={projectTypes[0]}>
@@ -71,7 +72,7 @@ export default function QuoteForm() {
         </select>
       </div>
       <div className="sm:col-span-2">
-        <label htmlFor="message" className={label}>
+        <label htmlFor="message" className={fieldLabelClass}>
           A little about the space
         </label>
         <textarea
@@ -93,7 +94,7 @@ export default function QuoteForm() {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex bg-tan-deep px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.06em] text-cream transition-colors hover:bg-coffee disabled:opacity-60"
+          className={`inline-flex ${buttonClass()} disabled:opacity-60`}
         >
           {status === "sending" ? "Sending…" : "Send Enquiry"}
         </button>
