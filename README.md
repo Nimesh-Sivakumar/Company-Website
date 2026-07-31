@@ -1,27 +1,49 @@
 # Cabinet Creation Co. — Website
 
-A responsive, single-page portfolio and lead-generation website for **Cabinet Creation Co.**, a custom cabinetry and interior fit-out studio based in Kuala Lumpur & Selangor, Malaysia. 
+Multi-page marketing site for **Cabinet Creation Co.**, a custom cabinetry and interior fit-out studio serving Kuala Lumpur & Selangor, Malaysia.
 
-**Live Demo:** [https://nimesh-sivakumar.github.io/Company-Website/](https://nimesh-sivakumar.github.io/Company-Website/)
+**Live:** https://nimesh-sivakumar.github.io/Company-Website/
 
----
+## Stack
 
-## 📖 Overview
+- **Next.js 15** (App Router) with static export (`output: "export"`)
+- **TypeScript**
+- **Tailwind CSS v4** — brand palette and fonts defined in `app/globals.css`
+- **Fonts:** Fraunces (display), Inter (body), Space Mono (labels) via `next/font`
 
-This project serves as the digital storefront for the business, highlighting custom wet and dry kitchens, walk-in wardrobes, and living space built-ins. The site is designed to be highly visual, emphasizing craftsmanship and the start-to-finish process while driving potential clients to a project inquiry form.
+## Pages
 
-## ✨ Features
+| Route | Contents |
+| --- | --- |
+| `/` | Hero, studio intro, stats, differentiators, collections, selected work, sintered stone spotlight, auto-scrolling process, testimonials, FAQ, CTA |
+| `/services` | The six collections in detail plus the six-step process |
+| `/portfolio` | Four recent projects with scope tags |
+| `/about` | Studio story, stats, how we work, FAQ |
+| `/contact` | Studio details and the quote request form |
 
-*   **Custom Scroll Animations:** Includes a bespoke "zoom-through" hero section that scales the initial image on scroll for a dynamic first impression.
-*   **Auto-Scrolling Marquee:** A seamlessly looping, auto-scrolling timeline detailing the 6-step working process.
-*   **Fully Responsive:** Built with fluid typography and CSS Grid/Flexbox to ensure the site looks flawless on desktop, tablet, and mobile devices.
-*   **Zero Dependencies:** The site is built with pure HTML5, CSS3, and Vanilla JavaScript. No external UI frameworks (like Bootstrap or Tailwind) were used, ensuring a lightweight and fast-loading page.
-*   **Form UI:** A clean, built-in quote request form (ready to be connected to a backend or form-forwarding service like Formspree).
+Copy, imagery and project data live in `lib/content.ts` — edit there to update the site.
 
-## 🛠️ Tech Stack
+## Local development
 
-*   **HTML5:** Semantic markup for accessibility and structure.
-*   **CSS3:** Custom styling featuring CSS variables for easy theming, modern grid layouts, and hardware-accelerated transitions.
-*   **JavaScript (ES6):** Used sparingly for the hero scroll-interaction, sticky navigation, and mobile menu toggling.
-*   **Fonts:** [Fraunces](https://fonts.google.com/specimen/Fraunces), [Inter](https://fonts.google.com/specimen/Inter), and [Space Mono](https://fonts.google.com/specimen/Space+Mono) via Google Fonts.
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run lint
+npm run build    # static export to ./out
+```
 
+## Environment variables
+
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_BASE_PATH` | Path prefix for GitHub Pages (`/Company-Website`). Leave unset locally. |
+| `NEXT_PUBLIC_FORM_ENDPOINT` | Form-forwarding endpoint (e.g. a Formspree URL) for the quote form. When unset, the form shows a preview confirmation and sends nothing. |
+
+## Deployment
+
+`.github/workflows/deploy.yml` builds the static export and publishes it to GitHub Pages on every push to `main`.
+
+Two one-time settings in the repo:
+
+1. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
+2. **Settings → Secrets and variables → Actions → Variables:** add `NEXT_PUBLIC_FORM_ENDPOINT` to receive real enquiries.
